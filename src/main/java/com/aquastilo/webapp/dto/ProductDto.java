@@ -7,7 +7,7 @@ import java.net.URI;
 public class ProductDto {
     private String name;
     private String description;
-    private float price;
+    private Integer price;
 
     private long id;
 
@@ -41,15 +41,6 @@ public class ProductDto {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -64,5 +55,21 @@ public class ProductDto {
 
     public void setSelf(URI self) {
         this.self = self;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

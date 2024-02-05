@@ -2,12 +2,12 @@ package com.aquastilo.webapp.controller;
 
 import com.aquastilo.webapp.controller.forms.product.CreateProductForm;
 import com.aquastilo.webapp.controller.forms.product.PatchProductForm;
+import com.aquastilo.webapp.dto.ProductDto;
 import com.aquastilo.webapp.interfaces.service.ProductService;
 import com.aquastilo.webapp.model.Product;
-import com.aquastilo.webapp.model.enums.ProductCategory;
 import com.aquastilo.webapp.model.exceptions.ProductNotFoundException;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,12 +25,14 @@ public class ProductController {
     }
 
     @GetMapping(path = "/{id}")
-    public Product getProduct(@PathVariable String id){
+    public ResponseEntity<ProductDto> getProduct(@PathVariable String id){
         Optional<Product> productOptional = pd.getProduct(Long.parseLong(id));
-        if(productOptional.isEmpty()){
+        if(productOptional.isPresent()){
+            return ResponseEntity.ok(ProductDto.fromProduct(productOptional.get()));
+        }
+        else{
             throw new ProductNotFoundException();
         }
-        return productOptional.get();
     }
 
     @PostMapping
@@ -53,8 +55,14 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getProducts(@RequestParam("category")String category){
-        return pd.getProducts(category);
+    public ResponseEntity<?> getProducts(@RequestParam("category")String category){
+        Optional<List<Product>> listOptional = pd.getProducts(category);
+        if(listOptional.isEmpty()){
+            return ResponseEntity.badRequest().body("Invalid category");
+        }
+        List<ProductDto> listDto = listOptional.get().stream().map(ProductDto::fromProduct).toList();
+
+        return ResponseEntity.ok(listDto);
     }
 
     @DeleteMapping(path = "/{id}")

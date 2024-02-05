@@ -13,7 +13,7 @@ public interface ProductService {
 
     Product patchProduct(Long id, String name, String description, Integer price, ProductCategory category);
 
-    List<Product> getProducts(String category);
+    Optional<List<Product>> getProducts(String category);
 
     void deleteProduct(Long id);
 

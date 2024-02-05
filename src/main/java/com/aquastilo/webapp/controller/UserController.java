@@ -2,11 +2,13 @@ package com.aquastilo.webapp.controller;
 
 import com.aquastilo.webapp.controller.forms.user.CreateUserForm;
 import com.aquastilo.webapp.controller.forms.user.PatchUserForm;
+import com.aquastilo.webapp.dto.UserDto;
 import com.aquastilo.webapp.interfaces.service.UserService;
 import com.aquastilo.webapp.model.User;
 import com.aquastilo.webapp.model.exceptions.UserAlreadyExistsException;
 import com.aquastilo.webapp.model.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -24,22 +26,26 @@ public class UserController {
     }
 
     @GetMapping(path = "/{id}")
-    public User getUserById(@PathVariable String id){
+    public ResponseEntity<UserDto> getUserById(@PathVariable String id){
         Long userId = Long.parseLong(id);
         final Optional<User> userOptional = us.getUser(userId);
-        if(userOptional.isEmpty()){
+        if(userOptional.isPresent()){
+            return ResponseEntity.ok(UserDto.fromUser(userOptional.get()));
+        }
+        else{
             throw new UserNotFoundException();
         }
-        return userOptional.get();
     }
 
     @GetMapping
-    public User getUserByEmail(@RequestParam("email") String email){
+    public ResponseEntity<UserDto> getUserByEmail(@RequestParam("email") String email){
         final Optional<User> userOptional = us.getUser(email);
-        if(userOptional.isEmpty()){
+        if(userOptional.isPresent()){
+            return ResponseEntity.ok(UserDto.fromUser(userOptional.get()));
+        }
+        else {
             throw new UserNotFoundException();
         }
-        return userOptional.get();
     }
 
     @PostMapping

@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,11 +50,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProducts(String category) {
+    public Optional<List<Product>> getProducts(String category) {
         if(pc.getCategory(category) == null){
-            return new ArrayList<>();
+            return Optional.empty();
         }
-        return pd.getProducts(ProductCategory.valueOf(category));
+        return Optional.of(pd.getProducts(ProductCategory.valueOf(category)));
     }
 
     @Override
