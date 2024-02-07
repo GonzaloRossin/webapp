@@ -2,7 +2,6 @@ package com.aquastilo.webapp.persistence;
 
 import com.aquastilo.webapp.interfaces.persistence.ProductDAO;
 import com.aquastilo.webapp.model.Product;
-import com.aquastilo.webapp.model.User;
 import com.aquastilo.webapp.model.enums.ProductCategory;
 import com.aquastilo.webapp.model.enums.status.ProductStatus;
 import jakarta.persistence.EntityManager;
