@@ -29,12 +29,19 @@ public class UserJpaDao implements UserDAO {
 
     @Override
     public Optional<User> getUser(long id) {
-        return Optional.ofNullable(em.find(User.class, id));
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.id = :id AND u.status = 'ACTIVE'", User.class)
+                               .setParameter("id", id);
+        try {
+            User user = query.getSingleResult();
+            return Optional.ofNullable(user);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public Optional<User> getUser(String email) {
-        TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.email = :email AND u.status = 'ACTIVE'", User.class);
         query.setParameter("email", email);
         try {
             User user = query.getSingleResult();

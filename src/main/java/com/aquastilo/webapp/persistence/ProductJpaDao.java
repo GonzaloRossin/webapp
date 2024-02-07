@@ -2,9 +2,11 @@ package com.aquastilo.webapp.persistence;
 
 import com.aquastilo.webapp.interfaces.persistence.ProductDAO;
 import com.aquastilo.webapp.model.Product;
+import com.aquastilo.webapp.model.User;
 import com.aquastilo.webapp.model.enums.ProductCategory;
 import com.aquastilo.webapp.model.enums.status.ProductStatus;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
@@ -52,13 +54,20 @@ public class ProductJpaDao implements ProductDAO {
 
     @Override
     public Optional<Product> getProduct(long id) {
-        return Optional.ofNullable(em.find(Product.class, id));
+        TypedQuery<Product> query = em.createQuery("SELECT p FROM Product p WHERE p.id = :id AND p.status = 'ACTIVE'",Product.class)
+                               .setParameter("id", id);
+        try {
+            Product product = query.getSingleResult();
+            return Optional.ofNullable(product);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public List<Product> getProducts(ProductCategory category) {
         TypedQuery<Product> query =
-                em.createQuery("SELECT p FROM Product p WHERE p.productCategory = :category", Product.class);
+                em.createQuery("SELECT p FROM Product p WHERE p.productCategory = :category AND p.status = 'ACTIVE'", Product.class);
         query.setParameter("category", category);
         return query.getResultList();
     }
