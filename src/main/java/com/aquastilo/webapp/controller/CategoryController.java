@@ -3,7 +3,6 @@ package com.aquastilo.webapp.controller;
 import com.aquastilo.webapp.interfaces.service.ProductCategoryService;
 import com.aquastilo.webapp.model.enums.ProductCategory;
 import com.aquastilo.webapp.model.exceptions.CategoryNotFoundException;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
