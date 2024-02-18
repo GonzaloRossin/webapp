@@ -28,7 +28,7 @@ public class ProductCategory {
     }
 
     public ProductCategory() {
-
+        //for hibernate
     }
 
     public Long getId() {

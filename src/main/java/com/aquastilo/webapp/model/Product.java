@@ -53,7 +53,7 @@ public class Product {
     }
 
     public Product() {
-
+        //for hibernate
     }
 
     public Long getId() {
