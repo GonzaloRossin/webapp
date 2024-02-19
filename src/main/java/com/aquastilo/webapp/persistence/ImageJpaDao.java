@@ -2,7 +2,6 @@ package com.aquastilo.webapp.persistence;
 
 import com.aquastilo.webapp.interfaces.persistence.ImageDAO;
 import com.aquastilo.webapp.model.Image;
-import com.aquastilo.webapp.utils.ImageUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -31,5 +30,18 @@ public class ImageJpaDao implements ImageDAO {
         em.persist(image);
         return image.getId();
 
+    }
+
+    @Override
+    public void deleteImage(long id) {
+        Image image = em.find(Image.class, id);
+        em.remove(image);
+    }
+
+    @Override
+    public void updateImage(long id, MultipartFile imageFile) throws IOException {
+        Image image = em.find(Image.class, id);
+        image.setBytes(imageFile.getBytes());
+        em.merge(image);
     }
 }

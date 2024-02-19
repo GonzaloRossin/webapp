@@ -11,4 +11,8 @@ public interface ImageDAO {
     Optional<Image> getImageById(long id);
 
     long uploadImage(MultipartFile imageFile) throws IOException;
+
+    void deleteImage(long id);
+
+    void updateImage(long id, MultipartFile imageFile) throws IOException;
 }
