@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping(path = "api/v1/resources/images")
 public class ImageController {
@@ -23,17 +25,26 @@ public class ImageController {
     public ResponseEntity<?> getImage(@PathVariable String imageId){
         long id = Long.parseLong(imageId);
 
-        Image image = is.getImage(id);
-        ImageDto imageDto = ImageDto.fromImage(image);
+        Optional<Image> imageOptional = is.getImage(id);
+        if(imageOptional.isPresent()){
+            ImageDto imageDto = ImageDto.fromImage(imageOptional.get());
 
-        return ResponseEntity.ok()
-                        .contentType(MediaType.valueOf("image/jpeg"))
-                        .body(imageDto.getBitMap());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.valueOf("image/jpeg"))
+                    .body(imageDto.getBitMap());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping
     public ResponseEntity<?> postImage(@RequestParam("image") MultipartFile file){
         long imageId = is.createImage(file);
         return ResponseEntity.ok(imageId);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> deleteImage(@PathVariable Long id){
+        is.deleteImage(id);
+        return ResponseEntity.noContent().build();
     }
 }

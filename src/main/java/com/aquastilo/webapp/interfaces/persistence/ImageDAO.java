@@ -12,7 +12,7 @@ public interface ImageDAO {
 
     long uploadImage(MultipartFile imageFile) throws IOException;
 
-    void deleteImage(long id);
+    void deleteImage(Image image);
 
     void updateImage(long id, MultipartFile imageFile) throws IOException;
 }

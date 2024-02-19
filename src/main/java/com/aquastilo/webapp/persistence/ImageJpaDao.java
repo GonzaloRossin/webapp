@@ -33,8 +33,7 @@ public class ImageJpaDao implements ImageDAO {
     }
 
     @Override
-    public void deleteImage(long id) {
-        Image image = em.find(Image.class, id);
+    public void deleteImage(Image image) {
         em.remove(image);
     }
 

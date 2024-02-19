@@ -23,9 +23,8 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image getImage(long id) {
-        Optional<Image> imageOptional = imageDAO.getImageById(id);
-        return imageOptional.orElse(null);
+    public Optional<Image> getImage(long id) {
+        return  imageDAO.getImageById(id);
     }
 
     @Transactional
@@ -37,5 +36,12 @@ public class ImageServiceImpl implements ImageService {
         } catch (IOException exception) {
             return -1;
         }
+    }
+
+    @Transactional
+    @Override
+    public void deleteImage(long id) {
+        Optional<Image> imageOptional = getImage(id);
+        imageOptional.ifPresent(imageDAO::deleteImage);
     }
 }
