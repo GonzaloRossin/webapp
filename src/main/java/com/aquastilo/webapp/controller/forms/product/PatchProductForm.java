@@ -14,6 +14,8 @@ public class PatchProductForm {
 
     private ProductCategory category;
 
+    private Long imageId;
+
     public String getProductName() {
         return productName;
     }
@@ -52,5 +54,13 @@ public class PatchProductForm {
 
     public void setCategory(ProductCategory category) {
         this.category = category;
+    }
+
+    public Long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Long imageId) {
+        this.imageId = imageId;
     }
 }

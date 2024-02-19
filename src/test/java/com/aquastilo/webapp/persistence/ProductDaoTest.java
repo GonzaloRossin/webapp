@@ -80,7 +80,11 @@ public class ProductDaoTest {
         Assert.assertNull(product.getPrice());
         Assert.assertEquals(ProductCategory.REMOS, product.getProductCategory());
 
-        product = productDAO.patchProduct(product, null,"salvavidas impecable", 200, null);
+        product = productDAO.patchProduct(product, null,
+                "salvavidas impecable",
+                200,
+                null,
+                null);
         productOptional = productDAO.getProduct(product.getId());
 
         Assert.assertTrue(productOptional.isPresent());

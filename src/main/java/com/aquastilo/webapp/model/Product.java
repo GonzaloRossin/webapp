@@ -34,6 +34,8 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
 
+    private long imageId;
+
     public Product(String name,
                    String description,
                    Integer price,
@@ -102,5 +104,13 @@ public class Product {
 
     public void setProductCategory(ProductCategory productCategory) {
         this.productCategory = productCategory;
+    }
+
+    public long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(long imageId) {
+        this.imageId = imageId;
     }
 }

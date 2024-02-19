@@ -11,7 +11,12 @@ public interface ProductService {
 
     Product createProduct(String productName, ProductCategory category);
 
-    Product patchProduct(Long id, String name, String description, Integer price, ProductCategory category);
+    Product patchProduct(Long id,
+                         String name,
+                         String description,
+                         Integer price,
+                         ProductCategory category,
+                         Long imageId);
 
     Optional<List<Product>> getProducts(String category);
 

@@ -9,7 +9,12 @@ import java.util.Optional;
 public interface ProductDAO {
     Product createProduct(String name, ProductCategory productCategory);
 
-    Product patchProduct(Product product, String name, String description, Integer price, ProductCategory category);
+    Product patchProduct(Product product,
+                         String name,
+                         String description,
+                         Integer price,
+                         ProductCategory category,
+                         Long imageid);
 
     Optional<Product> getProduct(long id);
 

@@ -43,9 +43,10 @@ public class ProductServiceImpl implements ProductService {
                                 String name,
                                 String description,
                                 Integer price,
-                                ProductCategory category) {
+                                ProductCategory category,
+                                Long imageId) {
         Optional<Product> productOptional = pd.getProduct(id);
-        return productOptional.map(product -> pd.patchProduct(product, name, description, price, category))
+        return productOptional.map(product -> pd.patchProduct(product, name, description, price, category, imageId))
                 .orElse(null);
     }
 

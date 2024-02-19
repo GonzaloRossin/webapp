@@ -34,7 +34,8 @@ public class ProductJpaDao implements ProductDAO {
                                 String name,
                                 String description,
                                 Integer price,
-                                ProductCategory category) {
+                                ProductCategory category,
+                                Long imageId) {
         if (name != null) {
             product.setName(name);
         }
@@ -46,6 +47,9 @@ public class ProductJpaDao implements ProductDAO {
         }
         if( category != null ){
             product.setProductCategory(category);
+        }
+        if( imageId != null){
+            product.setImageId(imageId);
         }
         em.merge(product);
         return product;

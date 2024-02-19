@@ -47,7 +47,8 @@ public class ProductController {
                 form.getProductName(),
                 form.getDescription(),
                 form.getPrice(),
-                form.getCategory());
+                form.getCategory(),
+                form.getImageId());
         if(product == null){
             throw new ProductNotFoundException();
         }
