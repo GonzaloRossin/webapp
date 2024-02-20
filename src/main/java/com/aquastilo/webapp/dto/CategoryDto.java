@@ -1,19 +1,24 @@
 package com.aquastilo.webapp.dto;
 
 import com.aquastilo.webapp.model.enums.ProductCategory;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
 public class CategoryDto {
     private String name;
-    private URI self;
 
     private URI products;
 
     public static CategoryDto fromCategory(ProductCategory category){
         CategoryDto dto = new CategoryDto();
         dto.name = category.name();
-        //TODO: agregar URI info
+        dto.products = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/api/v1/products")
+                .queryParam("category", category.name())
+                .build()
+                .toUri();
         return dto;
     }
 
@@ -23,14 +28,6 @@ public class CategoryDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public URI getSelf() {
-        return self;
-    }
-
-    public void setSelf(URI self) {
-        this.self = self;
     }
 
     public URI getProducts() {
