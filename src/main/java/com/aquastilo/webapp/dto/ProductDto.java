@@ -13,7 +13,7 @@ public class ProductDto {
 
     private String category;
 
-    private URI self;
+    private long imageId;
 
     public static ProductDto fromProduct(Product product){
         ProductDto dto = new ProductDto();
@@ -21,6 +21,7 @@ public class ProductDto {
         dto.description = product.getDescription();
         dto.price = product.getPrice();
         dto.id = product.getId();
+        dto.imageId = product.getImageId();
         //TODO: agregar UriInfo
         return dto;
     }
@@ -49,14 +50,6 @@ public class ProductDto {
         this.category = category;
     }
 
-    public URI getSelf() {
-        return self;
-    }
-
-    public void setSelf(URI self) {
-        this.self = self;
-    }
-
     public Integer getPrice() {
         return price;
     }
@@ -71,5 +64,13 @@ public class ProductDto {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(long imageId) {
+        this.imageId = imageId;
     }
 }

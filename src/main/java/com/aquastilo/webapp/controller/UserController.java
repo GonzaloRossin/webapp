@@ -8,6 +8,7 @@ import com.aquastilo.webapp.model.User;
 import com.aquastilo.webapp.model.exceptions.UserAlreadyExistsException;
 import com.aquastilo.webapp.model.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,25 +50,29 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody CreateUserForm form){
+    public ResponseEntity<UserDto> createUser(@RequestBody CreateUserForm form){
         final User user = us.createUser(form.getEmail(), form.getPassword());
         if(user == null){
             throw new UserAlreadyExistsException();
         }
-        return user;
+        UserDto userDto = UserDto.fromUser(user);
+
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @PatchMapping
-    public User pacthUser(@RequestBody PatchUserForm form) {
+    public ResponseEntity<UserDto> pacthUser(@RequestBody PatchUserForm form) {
         final User user = us.patchUser(form.getId(), form.getEmail(), form.getPassword());
         if(user == null){
             throw new UserNotFoundException();
         }
-        return user;
+        UserDto dto = UserDto.fromUser(user);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteUser(@PathVariable String id){
+    public ResponseEntity<?> deleteUser(@PathVariable String id){
         us.deleteUser(Long.parseLong(id));
+        return ResponseEntity.noContent().build();
     }
 }

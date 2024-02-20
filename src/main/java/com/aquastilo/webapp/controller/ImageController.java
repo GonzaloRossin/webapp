@@ -4,6 +4,8 @@ import com.aquastilo.webapp.dto.ImageDto;
 import com.aquastilo.webapp.interfaces.service.ImageService;
 import com.aquastilo.webapp.model.Image;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,24 +24,25 @@ public class ImageController {
     }
 
     @GetMapping(path="/{imageId}")
-    public ResponseEntity<?> getImage(@PathVariable String imageId){
+    public ResponseEntity<ImageDto> getImage(@PathVariable String imageId){
         long id = Long.parseLong(imageId);
 
         Optional<Image> imageOptional = is.getImage(id);
         if(imageOptional.isPresent()){
             ImageDto imageDto = ImageDto.fromImage(imageOptional.get());
 
-            return ResponseEntity.ok()
-                    .contentType(MediaType.valueOf("image/jpeg"))
-                    .body(imageDto.getBitMap());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType(imageOptional.get().getContentType()));
+
+            return new ResponseEntity<>(imageDto, headers, HttpStatus.OK);
         }
         return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<?> postImage(@RequestParam("image") MultipartFile file){
+    public ResponseEntity<Long> postImage(@RequestParam("image") MultipartFile file){
         long imageId = is.createImage(file);
-        return ResponseEntity.ok(imageId);
+        return new ResponseEntity<>(imageId, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{id}")

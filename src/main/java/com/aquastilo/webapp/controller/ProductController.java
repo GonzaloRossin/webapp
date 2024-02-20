@@ -7,6 +7,7 @@ import com.aquastilo.webapp.interfaces.service.ProductService;
 import com.aquastilo.webapp.model.Product;
 import com.aquastilo.webapp.model.exceptions.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,14 +37,17 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product postProduct(@RequestBody CreateProductForm form){
-        return pd.createProduct(form.getName(), form.getCategory());
+    public ResponseEntity<ProductDto> postProduct(@RequestBody CreateProductForm form){
+        Product product = pd.createProduct(form.getName(), form.getCategory());
+        ProductDto productDto = ProductDto.fromProduct(product);
+
+        return new ResponseEntity<>(productDto, HttpStatus.CREATED);
     }
 
-    @PatchMapping
-    public Product patchProduct(@RequestBody PatchProductForm form){
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<ProductDto> patchProduct(@RequestBody PatchProductForm form, @PathVariable Long id){
         Product product = pd.patchProduct(
-                form.getId(),
+                id,
                 form.getProductName(),
                 form.getDescription(),
                 form.getPrice(),
@@ -52,7 +56,10 @@ public class ProductController {
         if(product == null){
             throw new ProductNotFoundException();
         }
-        return product;
+
+        ProductDto productDto = ProductDto.fromProduct(product);
+
+        return ResponseEntity.ok(productDto);
     }
 
     @GetMapping
@@ -67,7 +74,9 @@ public class ProductController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteProduct(@PathVariable String id){
+    public ResponseEntity<?> deleteProduct(@PathVariable String id){
         pd.deleteProduct(Long.parseLong(id));
+
+        return ResponseEntity.noContent().build();
     }
 }

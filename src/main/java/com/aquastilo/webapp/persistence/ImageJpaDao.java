@@ -26,7 +26,7 @@ public class ImageJpaDao implements ImageDAO {
     public long uploadImage(MultipartFile imageFile) throws IOException {
         //byte[] imageData = ImageUtils.compressImage(imageFile.getBytes());
 
-        Image image = new Image(imageFile.getBytes());
+        Image image = new Image(imageFile.getBytes(), imageFile.getContentType());
         em.persist(image);
         return image.getId();
 
