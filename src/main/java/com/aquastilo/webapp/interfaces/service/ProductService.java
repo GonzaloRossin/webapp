@@ -9,7 +9,10 @@ import java.util.Optional;
 public interface ProductService {
     Optional<Product> getProduct(Long id);
 
-    Product createProduct(String productName, ProductCategory category);
+    Product createProduct(String productName,
+                          String description,
+                          Integer price,
+                          ProductCategory category);
 
     Product patchProduct(Long id,
                          String name,

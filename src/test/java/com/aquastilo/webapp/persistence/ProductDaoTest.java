@@ -44,7 +44,10 @@ public class ProductDaoTest {
     @Test
     @Rollback
     public void testCreateProduct(){
-        Product product = productDAO.createProduct("remo",
+        Product product = productDAO.createProduct(
+                "remo",
+                null,
+                null,
                 ProductCategory.REMOS);
 
         Assert.assertNotNull(product);

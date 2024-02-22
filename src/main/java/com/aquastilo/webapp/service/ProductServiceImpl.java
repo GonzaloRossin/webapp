@@ -33,8 +33,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-    public Product createProduct(String productName, ProductCategory category) {
-        return pd.createProduct(productName, category);
+    public Product createProduct(String productName,
+                                 String description,
+                                 Integer price,
+                                 ProductCategory category) {
+        return pd.createProduct(
+                productName,
+                description,
+                price,
+                category);
     }
 
     @Transactional

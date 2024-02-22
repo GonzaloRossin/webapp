@@ -38,7 +38,11 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDto> postProduct(@RequestBody CreateProductForm form){
-        Product product = pd.createProduct(form.getName(), form.getCategory());
+        Product product = pd.createProduct(
+                form.getName(),
+                form.getDescription(),
+                form.getPrice(),
+                form.getCategory());
         ProductDto productDto = ProductDto.fromProduct(product);
 
         return new ResponseEntity<>(productDto, HttpStatus.CREATED);

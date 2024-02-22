@@ -22,8 +22,20 @@ public class ProductJpaDao implements ProductDAO {
 
     @Transactional
     @Override
-    public Product createProduct(String name, ProductCategory category) {
-        final Product product = new Product(name, category, ProductStatus.ACTIVE);
+    public Product createProduct(String name,
+                                 String description,
+                                 Integer price,
+                                 ProductCategory category) {
+        final Product product = new Product(/*name, category, ProductStatus.ACTIVE*/);
+        product.setName(name);
+        product.setProductCategory(category);
+        product.setStatus(ProductStatus.ACTIVE);
+        if(description != null){
+            product.setDescription(description);
+        }
+        if(price != null){
+            product.setPrice(price);
+        }
         em.persist(product);
         return product;
     }

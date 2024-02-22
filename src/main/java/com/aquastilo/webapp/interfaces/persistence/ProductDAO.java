@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductDAO {
-    Product createProduct(String name, ProductCategory productCategory);
+    Product createProduct(String name,
+                          String description,
+                          Integer price,
+                          ProductCategory productCategory);
 
     Product patchProduct(Product product,
                          String name,
