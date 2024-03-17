@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Optional;
 
@@ -37,10 +38,15 @@ public class ImageController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping
-    public ResponseEntity<Long> postImage(@RequestParam("image") MultipartFile file){
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> postImage(@RequestParam("image") MultipartFile file){
         long imageId = is.createImage(file);
-        return new ResponseEntity<>(imageId, HttpStatus.CREATED);
+        String location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(imageId)
+                .toUri().toString();
+
+        return new ResponseEntity<>(location, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{id}")
