@@ -22,19 +22,17 @@ public class ImageController {
     public ImageController(ImageService is) {
         this.is = is;
     }
-
-    @GetMapping(path="/{imageId}")
-    public ResponseEntity<ImageDto> getImage(@PathVariable String imageId){
+    @GetMapping(path="/{imageId}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    public ResponseEntity<?> getImage(@PathVariable String imageId){
         long id = Long.parseLong(imageId);
 
         Optional<Image> imageOptional = is.getImage(id);
         if(imageOptional.isPresent()){
             ImageDto imageDto = ImageDto.fromImage(imageOptional.get());
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.parseMediaType(imageOptional.get().getContentType()));
-
-            return new ResponseEntity<>(imageDto, headers, HttpStatus.OK);
+            return ResponseEntity
+                    .ok()
+                    .body(imageDto.getBitMap());
         }
         return ResponseEntity.notFound().build();
     }
